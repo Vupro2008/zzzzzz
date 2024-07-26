@@ -45,8 +45,8 @@ class DungTuongTheLaHay:
 		self.url = 'None'
 		self.text = 'VUHOANGPRO'
 		self.iceArrow = "\033[1;36m~\033[1;37m[\033[1;36m❆\033[1;37m] \033[1;36m>\033[0;m "
-		linkvid = input(self.iceArrow + "Nhập Link Video: \033[1;36m")
-		self.url = linkvid
+		#linkvid = input(self.iceArrow + "Nhập Link Video: \033[1;36m")
+		#self.url = linkvid
 
 	def VuHoangTaDayPro(self):
 		if os.path.exists('session'): self.session.cookies.set("PHPSESSID", open('session',encoding='utf-8').read(), domain='zefoy.com')
