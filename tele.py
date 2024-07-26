@@ -10,6 +10,8 @@ import telebot
 import cfscrape
 from string import ascii_letters, digits
 from urllib.parse import urlparse
+from queue import Queue
+from threading import Lock
 
 class DungTuongTheLaHay:
     def __init__(self, proxy=None):
@@ -274,3 +276,4 @@ def buffview(user_id, link, target):
     user_last_run[user_id] = time.time()
 
 bot.polling()
+                
