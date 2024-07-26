@@ -12,6 +12,7 @@ from string import ascii_letters, digits
 from urllib.parse import urlparse
 from queue import Queue
 from threading import Lock
+from random import choice
 
 class DungTuongTheLaHay:
 	def __init__(self):
