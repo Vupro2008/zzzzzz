@@ -45,22 +45,13 @@ class DungTuongTheLaHay:
 		self.total_views = 0
 		self.url = 'None'
 		self.text = 'VUHOANGPRO'
-		self.iceArrow = "\033[1;36m~\033[1;37m[\033[1;36m❆\033[1;37m] \033[1;36m>\033[0;m "
+		self.iceArrow = ""
 		#linkvid = input(self.iceArrow + "Nhập Link Video: \033[1;36m")
 		#self.url = linkvid
 
 	def VuHoangTaDayPro(self):
 		if os.path.exists('session'): self.session.cookies.set("PHPSESSID", open('session',encoding='utf-8').read(), domain='zefoy.com')
 		request = self.session.get(self.base_url, headers=self.headers)
-		if '>Just a moment...<' in request.text:
-		    apikey = choice(['6462fad5778f01c3530c971a96f84ad685adfe95', '02ccae8a776e5b7880956a21a24891fb33502bb8', '630aab3e9036d1c1f9db358bef58897abf4186ca'])
-		    params = {
-                'url': self.base_url,
-                'apikey': apikey,
-            	'js_render': 'true',
-            	'custom_headers': 'true',
-            }
-		    request = requests.get('https://api.zenrows.com/v1/', params=params, headers=self.headers)
 		if 'Enter Video URL' in request.text: self.video_key = request.text.split('" placeholder="Enter Video URL"')[0].split('name="')[-1]; return True
 
 		try:
@@ -78,7 +69,7 @@ class DungTuongTheLaHay:
 			self.VuHoangTaDayPro()
 
 	def TheySayGoSlow(self, new_session = False):
-		if new_session: self.session = cfscrape.create_scraper(); os.remove('session'); time.sleep(2)
+		if new_session: self.session = requests.Session(); os.remove('session'); time.sleep(2)
 		if self.VuHoangTaDayPro(): print(self.iceArrow + '\033[1;32mGiải Captcha Success.\033[0;m'); return (True, 'The session already exists')
 		captcha_solve = self.WeSayGoGo('z_captcha_icetool_vip_pro.png')[1]
 		self.captcha_[self.captcha_1] = captcha_solve
@@ -108,19 +99,11 @@ class DungTuongTheLaHay:
 
 	def get_table(self, i = 1):
 	    print("\033[1;37m- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-		# table = PrettyTable(field_names=["ID", "DỊCH VỤ", "Status"], title="Status Services", header_style="upper",border=True)
-		# while True:
-			# if len(self.Rebooted()[0])>1:break
-			# else:print(self.iceArrow + '\033[1;31mKhông Thể Get Dịch Vụ...');self.TheySayGoSlow();time.sleep(2)
-		# for service in self.services: table.add_row([f"{Fore.CYAN}{i}{Fore.RESET}", service, f"{Fore.GREEN if 'ago updated' in self.services[service] else Fore.RED}{self.services[service]}{Fore.RESET}"]); i+=1
-		# table.title =  f"{Fore.YELLOW}Số Dịch Vụ Hoạt Động: {len([x for x in self.services_status if self.services_status[x]])}{Fore.RESET}"
-		# print(table)
 
 	def March_Of_The_Oni(self):
 		if self.service is None: return (False, "You didn't choose the service")
 		while True:
 			if self.service not in self.services_ids: self.Rebooted(); time.sleep(1)
-			#request = self.session.post(f'{self.base_url}{self.services_ids[self.service]}', headers = {"Origin": "https://zefoy.com","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36","X-Requested-With": "XMLHttpRequest",}, data = {self.video_key: self.url})
 			request = self.session.post(f'https://zefoy.com/c2VuZC9mb2xeb3dlcnNfdGlrdG9V', headers = {"Origin": "https://zefoy.com","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36","X-Requested-With": "XMLHttpRequest",}, data = {self.video_key: self.url})
 			try: self.video_info = base64.b64decode(requests.utils.unquote(request.text.encode()[::-1])).decode();
 			except: time.sleep(3); continue
@@ -145,7 +128,6 @@ class DungTuongTheLaHay:
 	def Crystalized(self):
 		if self.March_Of_The_Oni()[0] is False: return False
 		self.token = "".join(random.choices(ascii_letters+digits, k=16))
-		#request = self.session.post(f'{self.base_url}{self.services_ids[self.service]}', headers = {"Origin": "https://zefoy.com","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36","X-Requested-With": "XMLHttpRequest",}, data = {self.video_info[0]: self.video_info[1]})
 		request = self.session.post(f'https://zefoy.com/c2VuZC9mb2xeb3dlcnNfdGlrdG9V', headers = {"Origin": "https://zefoy.com","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36","X-Requested-With": "XMLHttpRequest",}, data = {self.video_info[0]: self.video_info[1]})
 		try: res = base64.b64decode(requests.utils.unquote(request.text.encode()[::-1])).decode();
 		except: time.sleep(3); return ""
@@ -158,10 +140,6 @@ class DungTuongTheLaHay:
 		        time.sleep(vudz)
 		    except: return False
 		else: print(res.split("sans-serif;text-align:center;color:green;'>")[1].split("</")[0])
-		    # self.dem += 1
-		    # #match = re.search(r'<i[^>]*></i>\s*([\d,]+)', self.total_views)
-		    # views = self.total_views.group(1)
-		    # print(IceVip(self.dem) + time.strftime('%H:%M') + " \033[1;36m->\033[0;m VIEW \033[1;36m->\033[0;m " + str(maskX(self.video_info[1])) + " \033[1;36m->\033[0;m " + views + " \033[1;36m->\033[0;m +1.0K")
 
 	def Spinjitzu(self):
 		request = self.session.get(f'https://tiktok.livecounts.io/video/stats/{urlparse(self.url).path.rpartition("/")[2]}',headers={'authority':'tiktok.livecounts.io','origin':'https://livecounts.io','user-agent':self.headers['user-agent']}).json()
@@ -199,15 +177,10 @@ class DungTuongTheLaHay:
                
 API_TOKEN = '7297514837:AAFNydW28Ano-cw4v7Y0b5OA-7JilZVxpZA'
 bot = telebot.TeleBot(API_TOKEN)
-
-# Sử dụng Queue để quản lý hàng đợi và Lock để đảm bảo truy cập an toàn
 buff_queue = Queue()
 lock = Lock()
-
-# Lưu thời gian hoàn thành của người dùng
 user_last_run = {}
 
-# Thời gian chờ 20 phút (1200 giây)
 COOLDOWN_PERIOD = 20 * 60
 
 @bot.message_handler(commands=['start'])
@@ -217,8 +190,6 @@ def send_welcome(message):
 @bot.message_handler(commands=['buffview'])
 def handle_buffview(message):
     user_id = message.from_user.id
-
-    # Kiểm tra nếu người dùng đang trong thời gian chờ
     if user_id in user_last_run and time.time() - user_last_run[user_id] < COOLDOWN_PERIOD:
         remaining_time = COOLDOWN_PERIOD - (time.time() - user_last_run[user_id])
         minutes, seconds = divmod(remaining_time, 60)
@@ -232,12 +203,10 @@ def handle_buffview(message):
         bot.reply_to(message, "Vui lòng cung cấp đúng định dạng: /buffview <link> <target>")
         return
 
-    # Đưa người dùng vào hàng đợi
     buff_queue.put((user_id, link, target))
-    queue_position = buff_queue.qsize()  # Lấy số lượng phần tử trong hàng đợi
+    queue_position = buff_queue.qsize()
     bot.reply_to(message, f"Đã thêm vào hàng chờ. Số hàng đợi của bạn: {queue_position}. Vui lòng chờ...")
 
-    # Thực hiện xử lý hàng đợi
     process_queue()
 
 def process_queue():
@@ -251,8 +220,6 @@ def process_queue():
         lock.release()
 
 def buffview(user_id, link, target):
-    # Đây là nơi bạn sẽ triển khai logic để thực hiện hành động buffview
-    # Ví dụ: gửi thông báo cho người dùng mỗi lần thực hiện
     VuHoangPro = DungTuongTheLaHay()
     VuHoangPro.url = link
     threading.Thread(target=VuHoangPro.Hands_of_Time).start()
@@ -265,8 +232,7 @@ def buffview(user_id, link, target):
         VuHoangPro.Crystalized()
     bot.send_message(user_id, "Đã hoàn thành.")
     
-    # Cập nhật thời gian hoàn thành cuối cùng của người dùng
     user_last_run[user_id] = time.time()
 
 bot.polling()
-                
+		
